@@ -19,7 +19,7 @@
                 <div class="card border-light mb-3">
                     <div class="card-body">
                       <h5 class="card-title d-flex justify-content-between">Entradas <span class="badge bg-success">+</span></h5>
-                      <p class="card-text">R$ 1.000,00 </p>
+                      <p class="card-text" id="entradas">R$ </p>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card border-light mb-3">
                     <div class="card-body">
                       <h5 class="card-title d-flex justify-content-between">Saídas <span class="badge bg-danger">-</span></h5>
-                      <p class="card-text">- R$ 200,00</p>
+                      <p class="card-text" id="saidas">- R$ </p>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <div class="card border-light mb-3 bg-success">
                     <div class="card-body">
                       <h5 class="card-title d-flex justify-content-between">Saldo <span class="badge bg-light text-dark">$</span></h5>
-                      <p class="card-text">R$ 800,00</p>
+                      <p class="card-text" id="total">R$ </p>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form onsubmit="soma(event)">
                     <div class="mb-3">
                       <label for="description" class="form-label">Descrição</label>
                       <input type="text" class="form-control" id="description">
@@ -73,11 +73,11 @@
                         <label for="date" class="form-label">Data</label>
                         <input type="date" class="form-control" id="date">
                     </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                      <button class="btn btn-success">Salvar</button>
+                    </div>
                   </form>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-success">Salvar</button>
             </div>
         </div>
         </div>
@@ -93,27 +93,8 @@
                 </tr>
             </thead>
 
-            <tbody>
-                <tr class="table-success">
-                  <th>Salário</th>
-                  <td>R$ 1.000,00</td>
-                  <td>13/07/2020</td>
-                  <td>
-                    <button type="button" class="btn btn-outline-danger">
-                        -
-                    </button>
-                  </td>
-                </tr>
-                <tr class="table-danger">
-                    <th>Mercado</th>
-                    <td>-R$ 200,00</td>
-                    <td>14/07/2020</td>
-                    <td>
-                      <button type="button" class="btn btn-outline-danger">
-                          -
-                      </button>
-                    </td>
-                  </tr>
+            <tbody id="tabela-transacao">
+                
             </tbody>
         </table>
     </main>
