@@ -1,32 +1,14 @@
 const apiTransacao = [
     {
         "descricao": "Salário",
-        "valor": 800,
-        "data": "13/07/2020",
+        "valor": 800.00,
+        "data": "2021-07-22",
         "tipo": "entradas"
     },
     {
         "descricao": "Mercado",
-        "valor": 150,
-        "data": "14/07/2020",
-        "tipo": "saida"
-    },
-    {
-        "descricao": "Mouse",
-        "valor": 50,
-        "data": "20/07/2020",
-        "tipo": "saida"
-    },
-    {
-        "descricao": "Freela",
-        "valor": 300,
-        "data": "21/07/2020",
-        "tipo": "entradas"
-    },
-    {
-        "descricao": "Jantar",
-        "valor": 150,
-        "data": "20/07/2020",
+        "valor": 150.00,
+        "data": "2021-07-22",
         "tipo": "saida"
     }
 ]
@@ -36,16 +18,62 @@ let saidas = 0
 let tipo
 let tabela = document.querySelector('#tabela-transacao')
 
+function adicionarDados(descricao, valor, data, classe){
+    let tr = document.createElement('tr')
+    tr.classList.add(classe)
+    let th = document.createElement('th')
+    let tdValor = document.createElement('td')
+    let tdData = document.createElement('td')
+    let tdButton = document.createElement('td')
+
+    tr.appendChild(th).innerHTML = descricao
+    tr.appendChild(tdValor).innerHTML = "R$ " + valor.toFixed(2)
+    tr.appendChild(tdData).innerHTML = data
+    tr.appendChild(tdButton).innerHTML = "<button type='button' class='btn btn-outline-dark'>-</button> </td> </tr>"
+
+    tabela.appendChild(tr)
+}
+
+function novaTransacao(event){
+    event.preventDefault();
+    let form = event.target
+    let descricao = form.querySelector('#description').value
+    let valor = parseFloat(form.querySelector('#value').value)
+    let data = form.querySelector('#date').value
+    let tipo
+    let classe
+
+    if(valor > 0){
+        tipo = "entradas"
+        classe = "table-success"
+    } else {
+        tipo = "saidas"
+        valor = Math.abs(valor)
+        classe = "table-danger"
+    }
+
+    let novaTransacao = {
+        "descricao": descricao,
+        "valor": valor,
+        "data": data,
+        "tipo": tipo
+    }
+
+    apiTransacao.push(novaTransacao)
+
+    adicionarDados(descricao, valor, data, classe)
+}
+
 for(let i = 0; i < apiTransacao.length; i++){
     if(apiTransacao[i].tipo === "entradas"){
         entradas = entradas + apiTransacao[i].valor
-        tipo = "success"
+        tipo = "table-success"
     } else {
         saidas = saidas + apiTransacao[i].valor
-        tipo = "danger"
+        tipo = "table-danger"
     }
 
-    tabela.innerHTML += "<tr class='table-" + tipo + "'> <th>" + apiTransacao[i].descricao + "</th> <td> R$ " + apiTransacao[i].valor.toFixed(2) + "</td> <td>" + apiTransacao[i].data + "</td> <td> <button type='button' class='btn btn-outline-danger'>-</button> </td> </tr>"
+    adicionarDados(apiTransacao[i].descricao, apiTransacao[i].valor, apiTransacao[i].data, tipo)
 }
 
 let saldo = entradas - saidas
@@ -53,10 +81,3 @@ let saldo = entradas - saidas
 document.querySelector('#entradas').innerHTML += entradas.toFixed(2)
 document.querySelector('#saidas').innerHTML += saidas.toFixed(2)
 document.querySelector('#total').innerHTML += saldo.toFixed(2)
-
-function soma(event){
-    event.preventDefault();
-    let form = event.target
-    let descricao = form.querySelector('input#description').value
-    console.log(descricao)
-}
