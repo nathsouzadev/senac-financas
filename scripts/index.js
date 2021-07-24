@@ -60,24 +60,46 @@ function novaTransacao(event){
     }
 
     apiTransacao.push(novaTransacao)
-
-    adicionarDados(descricao, valor, data, classe)
+    
+    App.recarregar()
 }
 
-for(let i = 0; i < apiTransacao.length; i++){
-    if(apiTransacao[i].tipo === "entradas"){
-        entradas = entradas + apiTransacao[i].valor
-        tipo = "table-success"
-    } else {
-        saidas = saidas + apiTransacao[i].valor
-        tipo = "table-danger"
+const App = {
+    
+    entradas: document.querySelector('#entradas'),
+    saidas: document.querySelector('#saidas'),
+    total: document.querySelector('#total'),
+    
+    inicializar(){
+        for(let i = 0; i < apiTransacao.length; i++){
+            if(apiTransacao[i].tipo === "entradas"){
+                entradas = entradas + apiTransacao[i].valor
+                tipo = "table-success"
+            } else {
+                saidas = saidas + apiTransacao[i].valor
+                tipo = "table-danger"
+            }
+        
+            adicionarDados(apiTransacao[i].descricao, apiTransacao[i].valor, apiTransacao[i].data, tipo)
+        }
+        
+        let saldo = entradas - saidas
+        
+        this.entradas.innerHTML += entradas.toFixed(2)
+        this.saidas.innerHTML += saidas.toFixed(2)
+        this.total.innerHTML += saldo.toFixed(2)
+    },
+
+    recarregar(){
+        entradas = 0
+        saidas = 0
+        saldo = 0
+        tabela.innerHTML = ""
+        this.entradas.innerHTML = "R$ "
+        this.saidas.innerHTML = "- R$ "
+        this.total.innerHTML = "R$ "
+        this.inicializar();
     }
-
-    adicionarDados(apiTransacao[i].descricao, apiTransacao[i].valor, apiTransacao[i].data, tipo)
 }
 
-let saldo = entradas - saidas
-
-document.querySelector('#entradas').innerHTML += entradas.toFixed(2)
-document.querySelector('#saidas').innerHTML += saidas.toFixed(2)
-document.querySelector('#total').innerHTML += saldo.toFixed(2)
+App.inicializar()
